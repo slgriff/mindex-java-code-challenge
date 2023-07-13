@@ -16,7 +16,7 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
       - name: Validate gradle wrapper
-        uses: gradle/wrapper-validation/action@v1
+        uses: gradle/wrapper-validation-action@v1
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
