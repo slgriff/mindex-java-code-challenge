@@ -5,6 +5,10 @@
 - `employee` field in response object is ambiguous
     - could be either a nested Employee object or id reference to employee
         - implemented as if were id reference
+- Caching of results is not performed
+    - traversal to get reporting structure computes count for direct reports but information is not saved for subsequent calls
+- 404 Not Found is returned via controller if employee id does not exist in database
+     - Unit tests make check against null object reporting structure (employeeId is null and number of reports is zero)
 
 ## Task 2
 
@@ -19,7 +23,7 @@
     - if string-ly typed
         - dealing with consistency of "YYYY-MM-DD", "YYYY-DD-MM", "MM/DD/YYYY", etc in data
         - validation of date field and subcomponents
-    - is timestamp portion useful
+    - is timestamp portion useful?
         - assumed not necessary for this usecase
     - Chose to use Java Date object
 - Validation of employee ID for creation of compensation records is not performed
