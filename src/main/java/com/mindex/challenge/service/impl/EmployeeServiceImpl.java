@@ -1,6 +1,8 @@
 package com.mindex.challenge.service.impl;
 
+import com.mindex.challenge.dao.CompensationRepository;
 import com.mindex.challenge.dao.EmployeeRepository;
+import com.mindex.challenge.data.Compensation;
 import com.mindex.challenge.data.Employee;
 import com.mindex.challenge.exception.EmployeeNotFoundException;
 import com.mindex.challenge.service.EmployeeService;
@@ -19,15 +21,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+    
+    @Autowired
+    private CompensationRepository compensationRepository;
 
     @Override
     public Employee create(Employee employee) {
         LOG.debug("Creating employee [{}]", employee);
 
         employee.setEmployeeId(UUID.randomUUID().toString());
-        employeeRepository.insert(employee);
-
-        return employee;
+        return employeeRepository.insert(employee);
     }
 
     @Override
@@ -51,6 +54,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     	Employee employee = getEmployee(id);
     	
     	return countNumberOfReports(employee);
+    }
+    
+    @Override
+    public Compensation createCompensation(Compensation compensation) {
+    	LOG.debug("Creating compensation [{}]", compensation);
+    	
+    	return compensationRepository.insert(compensation);
+    }
+    
+    @Override
+    public Compensation getCompensation(String employeeId) {
+    	LOG.debug("Getting compensation for employee id [{}]", employeeId);
+    	
+    	return compensationRepository.findByEmployeeId(employeeId);
     }
     
     private Employee getEmployee(String id) {

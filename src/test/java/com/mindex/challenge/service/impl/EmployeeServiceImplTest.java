@@ -130,12 +130,11 @@ public class EmployeeServiceImplTest {
     @Test
     public void testCompensation() {
     	Compensation johnLennonCompensation = new Compensation();
-    	johnLennonCompensation.setEmployeeId(johnLennonEmployeeId);
     	johnLennonCompensation.setSalary("10000000000000");
     	johnLennonCompensation.setEffectiveDate("1970-01-01");
     	
-    	Compensation johnLennonCreatedCompensation = restTemplate.postForEntity(employeeCompensationUrl, johnLennonCompensation, Compensation.class).getBody();
-    
+    	Compensation johnLennonCreatedCompensation = restTemplate.postForEntity(employeeCompensationUrl, johnLennonCompensation, Compensation.class, johnLennonEmployeeId).getBody();
+    	assertEquals(johnLennonEmployeeId, johnLennonCreatedCompensation.getEmployeeId());
     	assertCompensationEquivalence(johnLennonCompensation, johnLennonCreatedCompensation);
     	
     	Compensation johnLennonReadCompensation = restTemplate.getForEntity(employeeCompensationUrl, Compensation.class, johnLennonEmployeeId).getBody();
