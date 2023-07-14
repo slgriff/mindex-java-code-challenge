@@ -4,6 +4,7 @@ import com.mindex.challenge.dao.CompensationRepository;
 import com.mindex.challenge.dao.EmployeeRepository;
 import com.mindex.challenge.data.Compensation;
 import com.mindex.challenge.data.Employee;
+import com.mindex.challenge.data.ReportingStructure;
 import com.mindex.challenge.exception.EmployeeNotFoundException;
 import com.mindex.challenge.service.EmployeeService;
 import org.slf4j.Logger;
@@ -48,12 +49,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
     
     @Override
-    public int getNumberOfReports(String id) {
-    	LOG.debug("Getting number of reports for employee id [{}]", id);
+    public ReportingStructure getReportingStructure(String employeeId) {
+    	LOG.debug("Getting number of reports for employee id [{}]", employeeId);
     	
-    	Employee employee = getEmployee(id);
+    	Employee employee = getEmployee(employeeId);
     	
-    	return countNumberOfReports(employee);
+    	int numberOfReports = countNumberOfReports(employee);
+    	
+    	return new ReportingStructure(employee.getEmployeeId(), numberOfReports);
     }
     
     @Override
@@ -64,10 +67,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
     
     @Override
-    public List<Compensation> getCompensation(String employeeId) {
-    	LOG.debug("Getting compensation for employee id [{}]", employeeId);
+    public List<Compensation> getCompensation(String employee) {
+    	LOG.debug("Getting compensation for employee [{}]", employee);
     	
-    	return compensationRepository.findByEmployeeId(employeeId);
+    	return compensationRepository.findByEmployee(employee);
     }
     
     private Employee getEmployee(String id) {

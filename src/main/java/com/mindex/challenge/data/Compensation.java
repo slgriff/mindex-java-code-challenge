@@ -1,18 +1,19 @@
 package com.mindex.challenge.data;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class Compensation {
-	private String employeeId;
+	private String employee;
 	private String salary;
-	private String effectiveDate;
+	private Date effectiveDate;
 	
-	public String getEmployeeId() {
-		return employeeId;
+	public String getEmployee() {
+		return employee;
 	}
 	
-	public void setEmployeeId(String employeeId) {
-		this.employeeId = employeeId;
+	public void setEmployee(String employee) {
+		this.employee = employee;
 	}
 	
 	public String getSalary() {
@@ -23,23 +24,23 @@ public class Compensation {
 		this.salary = salary;
 	}
 	
-	public String getEffectiveDate() {
+	public Date getEffectiveDate() {
 		return effectiveDate;
 	}
 	
-	public void setEffectiveDate(String effectiveDate) {
+	public void setEffectiveDate(Date effectiveDate) {
 		this.effectiveDate = effectiveDate;
 	}
 
 	@Override
 	public String toString() {
-		return "Compensation [employeeId=" + employeeId + ", salary=" + salary + ", effectiveDate=" + effectiveDate
+		return "Compensation [employee=" + employee + ", salary=" + salary + ", effectiveDate=" + effectiveDate
 				+ "]";
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(employeeId, salary, effectiveDate);
+		return Objects.hash(employee, salary, effectiveDate);
 	}
 	
 	@Override
@@ -58,7 +59,7 @@ public class Compensation {
 		
 		Compensation c = (Compensation) o;
 		
-		return Objects.equals(employeeId, c.employeeId)
+		return Objects.equals(employee, c.employee)
 				&& Objects.equals(salary, c.salary)
 				&& Objects.equals(effectiveDate, c.effectiveDate);
 	}

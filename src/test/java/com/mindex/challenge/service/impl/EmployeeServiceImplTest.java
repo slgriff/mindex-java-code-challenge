@@ -17,6 +17,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -129,13 +133,15 @@ public class EmployeeServiceImplTest {
     }
     
     @Test
-    public void testCompensation() {
+    public void testCompensation() throws ParseException {
+    	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    	
     	Compensation johnLennonCompensation = new Compensation();
     	johnLennonCompensation.setSalary("10000000000000");
-    	johnLennonCompensation.setEffectiveDate("1970-01-01");
+    	johnLennonCompensation.setEffectiveDate(dateFormat.parse("1970-01-01"));
     	
     	Compensation johnLennonCreatedCompensation = restTemplate.postForEntity(employeeCompensationUrl, johnLennonCompensation, Compensation.class, johnLennonEmployeeId).getBody();
-    	assertEquals(johnLennonEmployeeId, johnLennonCreatedCompensation.getEmployeeId());
+    	assertEquals(johnLennonEmployeeId, johnLennonCreatedCompensation.getEmployee());
     	assertCompensationEquivalence(johnLennonCompensation, johnLennonCreatedCompensation);
     	
     	Compensation[] johnLennonReadCompensation = restTemplate.getForEntity(employeeCompensationUrl, Compensation[].class, johnLennonEmployeeId).getBody();
@@ -146,10 +152,10 @@ public class EmployeeServiceImplTest {
     	
     	Compensation newJohnLennonCompensation = new Compensation();
     	newJohnLennonCompensation.setSalary("1");
-    	newJohnLennonCompensation.setEffectiveDate("2000-01-01");
+    	newJohnLennonCompensation.setEffectiveDate(dateFormat.parse("2000-01-01"));
     	
     	Compensation newJohnLennonCreatedCompensation = restTemplate.postForEntity(employeeCompensationUrl, newJohnLennonCompensation, Compensation.class, johnLennonEmployeeId).getBody();
-    	assertEquals(johnLennonEmployeeId, newJohnLennonCreatedCompensation.getEmployeeId());
+    	assertEquals(johnLennonEmployeeId, newJohnLennonCreatedCompensation.getEmployee());
     	assertCompensationEquivalence(newJohnLennonCompensation, newJohnLennonCreatedCompensation);
     	
     	johnLennonReadCompensation = restTemplate.getForEntity(employeeCompensationUrl, Compensation[].class, johnLennonEmployeeId).getBody();

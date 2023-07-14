@@ -51,16 +51,14 @@ public class EmployeeController {
     public ReportingStructure getReportingStructure(@PathVariable String id) {
     	LOG.debug("Received reporting structure get request for employee id [{}]", id);
     	
-    	int numberOfReports = employeeService.getNumberOfReports(id);
-    	
-    	return new ReportingStructure(id, numberOfReports);
+    	return employeeService.getReportingStructure(id);
     }
     
     @PostMapping("/{id}/compensation")
     public Compensation createCompensation(@PathVariable String id, @RequestBody Compensation compensation) {
     	LOG.debug("Received compensation create request for id [{}] and compensation [{}]", id, compensation);
     	
-    	compensation.setEmployeeId(id);
+    	compensation.setEmployee(id);
     	
     	return employeeService.createCompensation(compensation);
     }

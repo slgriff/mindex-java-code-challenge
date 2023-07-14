@@ -1,6 +1,7 @@
 package com.mindex.challenge.data;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -66,4 +67,35 @@ public class Employee {
     public void setDirectReports(List<Employee> directReports) {
         this.directReports = directReports;
     }
+
+	@Override
+	public String toString() {
+		return "Employee [employeeId=" + employeeId + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", position=" + position + ", department=" + department + ", directReports=" + directReports + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(employeeId);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null) {
+			return false;
+		}
+		
+		if (o == this) {
+			return true;
+		}
+		
+		if (!(o instanceof Employee)) {
+			return false;
+		}
+		
+		Employee other = (Employee) o;
+		return Objects.equals(employeeId, other.employeeId);
+	}
+    
+    
 }

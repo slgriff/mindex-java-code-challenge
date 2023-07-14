@@ -7,6 +7,6 @@ import com.mindex.challenge.data.Compensation;
 import java.util.List;
 
 public interface CompensationRepository extends MongoRepository<Compensation, String> {
-	List<Compensation> findByEmployeeId(String employeeId);
+	List<Compensation> findByEmployee(String employee);
 
 }
