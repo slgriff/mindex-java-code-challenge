@@ -3,9 +3,13 @@ package com.mindex.challenge.data;
 import java.util.Date;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Compensation {
 	private String employee;
 	private String salary;
+	
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date effectiveDate;
 	
 	public String getEmployee() {

@@ -26,6 +26,7 @@
     - is timestamp portion useful?
         - assumed not necessary for this usecase
     - Chose to use Java Date object
+    - Input and output format pattern is `"yyyy-MM-dd"`
 - Validation of employee ID for creation of compensation records is not performed
     - may insert compensation records for an employee id with no corresponding employee object in database
 - Multiple compensation entities per employee are allowed
