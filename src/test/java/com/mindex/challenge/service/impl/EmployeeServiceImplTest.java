@@ -1,5 +1,6 @@
 package com.mindex.challenge.service.impl;
 
+import com.mindex.challenge.data.Compensation;
 import com.mindex.challenge.data.Employee;
 import com.mindex.challenge.data.ReportingStructure;
 import com.mindex.challenge.service.EmployeeService;
@@ -27,6 +28,7 @@ public class EmployeeServiceImplTest {
     private String employeeUrl;
     private String employeeIdUrl;
     private String employeeReportingStructureUrl;
+    private String employeeCompensationUrl;
     
     private final String johnLennonEmployeeId = "16a596ae-edd3-4847-99fe-c4518e82c86f";
     private final String paulMcCartneyEmployeeId = "b7839309-3348-463b-a7e3-5de1c168beb3";
@@ -53,6 +55,7 @@ public class EmployeeServiceImplTest {
         employeeUrl = baseUrl + "/employee";
         employeeIdUrl = employeeUrl + "/{id}";
         employeeReportingStructureUrl = employeeIdUrl + "/reportingstructure";
+        employeeCompensationUrl = employeeIdUrl + "/compensation";
     }
 
     @Test
@@ -93,7 +96,7 @@ public class EmployeeServiceImplTest {
 
         Employee notFoundEmployee = restTemplate.getForEntity(employeeIdUrl, Employee.class, mickJaggerEmployeeId).getBody();
         
-        assertEmployeeEquivalence(notFoundEmployee, new Employee());
+        assertEmployeeEquivalence(new Employee(), notFoundEmployee);
     }
     
     @Test
@@ -123,11 +126,28 @@ public class EmployeeServiceImplTest {
     	assertEquals(0, mickJagger.getNumberOfReports());
     	assertNull(mickJagger.getEmployee());
     }
+    
+    @Test
+    public void testCompensation() {
+    	Compensation johnLennonCompensation = new Compensation();
+    	johnLennonCompensation.setEmployeeId(johnLennonEmployeeId);
+    	johnLennonCompensation.setSalary("10000000000000");
+    	johnLennonCompensation.setEffectiveDate("1970-01-01");
+    	
+    	Compensation johnLennonCreatedCompensation = restTemplate.postForEntity(employeeCompensationUrl, johnLennonCompensation, Compensation.class).getBody();
+    
+    	assertCompensationEquivalence(johnLennonCompensation, johnLennonCreatedCompensation);
+    }
 
     private static void assertEmployeeEquivalence(Employee expected, Employee actual) {
         assertEquals(expected.getFirstName(), actual.getFirstName());
         assertEquals(expected.getLastName(), actual.getLastName());
         assertEquals(expected.getDepartment(), actual.getDepartment());
         assertEquals(expected.getPosition(), actual.getPosition());
+    }
+    
+    private static void assertCompensationEquivalence(Compensation expected, Compensation actual) {
+    	assertEquals(expected.getSalary(), actual.getSalary());
+    	assertEquals(expected.getEffectiveDate(), actual.getEffectiveDate());
     }
 }
