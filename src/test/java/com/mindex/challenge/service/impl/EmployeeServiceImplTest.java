@@ -17,6 +17,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -137,9 +138,25 @@ public class EmployeeServiceImplTest {
     	assertEquals(johnLennonEmployeeId, johnLennonCreatedCompensation.getEmployeeId());
     	assertCompensationEquivalence(johnLennonCompensation, johnLennonCreatedCompensation);
     	
-    	Compensation johnLennonReadCompensation = restTemplate.getForEntity(employeeCompensationUrl, Compensation.class, johnLennonEmployeeId).getBody();
-    	assertEquals(johnLennonEmployeeId, johnLennonReadCompensation.getEmployeeId());
-    	assertCompensationEquivalence(johnLennonCompensation, johnLennonReadCompensation);
+    	Compensation[] johnLennonReadCompensation = restTemplate.getForEntity(employeeCompensationUrl, Compensation[].class, johnLennonEmployeeId).getBody();
+    	assertThat(johnLennonReadCompensation)
+    	    .isNotEmpty()
+    		.hasSize(1)
+    		.contains(johnLennonCreatedCompensation);
+    	
+    	Compensation newJohnLennonCompensation = new Compensation();
+    	newJohnLennonCompensation.setSalary("1");
+    	newJohnLennonCompensation.setEffectiveDate("2000-01-01");
+    	
+    	Compensation newJohnLennonCreatedCompensation = restTemplate.postForEntity(employeeCompensationUrl, newJohnLennonCompensation, Compensation.class, johnLennonEmployeeId).getBody();
+    	assertEquals(johnLennonEmployeeId, newJohnLennonCreatedCompensation.getEmployeeId());
+    	assertCompensationEquivalence(newJohnLennonCompensation, newJohnLennonCreatedCompensation);
+    	
+    	johnLennonReadCompensation = restTemplate.getForEntity(employeeCompensationUrl, Compensation[].class, johnLennonEmployeeId).getBody();
+    	assertThat(johnLennonReadCompensation)
+	    	.isNotEmpty()
+	    	.hasSize(2)
+	    	.contains(johnLennonCreatedCompensation, newJohnLennonCreatedCompensation);
     }
 
     private static void assertEmployeeEquivalence(Employee expected, Employee actual) {

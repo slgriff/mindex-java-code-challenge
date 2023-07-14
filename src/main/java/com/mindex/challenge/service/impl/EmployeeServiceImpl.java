@@ -64,7 +64,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
     
     @Override
-    public Compensation getCompensation(String employeeId) {
+    public List<Compensation> getCompensation(String employeeId) {
     	LOG.debug("Getting compensation for employee id [{}]", employeeId);
     	
     	return compensationRepository.findByEmployeeId(employeeId);
