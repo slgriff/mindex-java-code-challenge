@@ -137,6 +137,10 @@ public class EmployeeServiceImplTest {
     	Compensation johnLennonCreatedCompensation = restTemplate.postForEntity(employeeCompensationUrl, johnLennonCompensation, Compensation.class).getBody();
     
     	assertCompensationEquivalence(johnLennonCompensation, johnLennonCreatedCompensation);
+    	
+    	Compensation johnLennonReadCompensation = restTemplate.getForEntity(employeeCompensationUrl, Compensation.class, johnLennonEmployeeId).getBody();
+    	assertEquals(johnLennonEmployeeId, johnLennonReadCompensation.getEmployeeId());
+    	assertCompensationEquivalence(johnLennonCompensation, johnLennonReadCompensation);
     }
 
     private static void assertEmployeeEquivalence(Employee expected, Employee actual) {
